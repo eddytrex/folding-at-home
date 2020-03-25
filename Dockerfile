@@ -25,4 +25,12 @@ ADD config.xml /etc/fahclient/
 RUN chown fahclient:root /etc/fahclient/config.xml
 RUN sed -i -e "s/{{USERNAME}}/$USERNAME/;s/{{TEAM}}/$TEAM/;s/{{POWER}}/$POWER/" /etc/fahclient/config.xml
 
-CMD /etc/init.d/FAHClient start && tail -F /var/lib/fahclient/log.txt
+
+RUN mkdir -p /home/fahclient && \
+    chown fahclient:fahclient /home/fahclient
+
+USER fahclient
+
+WORKDIR /home/fahclient
+
+ENTRYPOINT [ "/usr/bin/FAHClient" ]
